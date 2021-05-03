@@ -1,0 +1,72 @@
+version: '2.2'
+services:
+  server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    restart: always
+    cap_add:
+      - NET_ADMIN
+    networks:
+      network:
+        ipv4_address: 172.72.1.0
+    expose:
+      - "1-65535"
+
+  client-1:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      network:
+        ipv4_address: 172.72.1.1
+    expose:
+      - "1-65535"
+    depends_on:
+      - server
+
+  client-2:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      network:
+        ipv4_address: 172.72.2.2
+    expose:
+      - "1-65535"
+    depends_on:
+      - server
+  
+  client-3:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      network:
+        ipv4_address: 172.72.3.3
+    expose:
+      - "1-65535"
+    depends_on:
+      - server
+
+  client-4:
+    build:
+      context: client
+      dockerfile: Dockerfile
+    restart: always
+    networks:
+      network:
+        ipv4_address: 172.72.4.4
+    expose:
+      - "1-65535"
+    depends_on:
+      - server
+
+networks:
+  network:
+    ipam:
+      config:
+        - subnet: 172.72.0.0/16
